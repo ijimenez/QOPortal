@@ -10,12 +10,12 @@
 
     <ui:define name="content">
         <h:form>
-        	<h3>Please enter your name and password.</h3>
+        	<h3>Please enter your QO email and password</h3>
             <h:panelGrid columns="2">
-                <h:outputText value="Name"></h:outputText>
-                <h:inputText value="#{loginBean.name}"></h:inputText>
+                <h:outputText value="QO Email"></h:outputText>
+                <h:inputText value="#{loginBean.name}" size="32"></h:inputText>
                 <h:outputText value="Password"></h:outputText>
-                <h:inputSecret value="#{loginBean.password}"></h:inputSecret>
+                <h:inputSecret value="#{loginBean.password}" size="32"></h:inputSecret>
             </h:panelGrid>
             <h:commandButton value="Login" action="#{loginBean.login}"></h:commandButton>
         </h:form>

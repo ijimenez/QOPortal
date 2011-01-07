@@ -59,6 +59,6 @@ public class LoginBean
     @Override
     public String toString()
     {
-    	return "name="+name+" password="+password;
+    	return "name="+name;
     }
 }

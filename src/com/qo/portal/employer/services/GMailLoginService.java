@@ -1,29 +1,44 @@
 package com.qo.portal.employer.services;
 
-import java.util.List;
+import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.methods.GetMethod;
 
-import com.googlecode.gmail4j.GmailMessage;
-import com.googlecode.gmail4j.http.HttpGmailConnection;
-import com.googlecode.gmail4j.rss.RssGmailClient;
-
-public class GMailLoginService 
+public class GMailLoginService
 {
+	private static String gmailFeedUrl = "https://mail.google.com/mail/feed/atom";
 
 	public static void login(String user, char[] password) throws Exception
 	{
 		
-		HttpGmailConnection connection = new HttpGmailConnection(user, password);
-		RssGmailClient client = new RssGmailClient();
-		client.setConnection(connection);
-		try
-		{
-			List<GmailMessage> messages = client.getUnreadMessages();
-			int messagesNumber = messages.size();
-		}
-		catch(Throwable t)
-		{
-			throw new Exception("Authentication failed");
-		}
+		MultiThreadedHttpConnectionManager connectionManager =
+      		new MultiThreadedHttpConnectionManager();
+      	HttpClient client = new HttpClient(connectionManager);
+
+
+        Credentials defaultcreds = new UsernamePasswordCredentials(user, new String(password));
+        client.getState().setCredentials(AuthScope.ANY, defaultcreds);
+        
+        GetMethod get = new GetMethod(gmailFeedUrl);
+
+        get.setDoAuthentication( true );
+		 	
+        try {
+	        // execute the GET
+	        int status = client.executeMethod( get );
+	        System.out.println("HTTP code:"+status);
+	        if (status!=200)
+	        {
+	        	throw new Exception("Authentication failed");
+	        }
+	    } finally {
+	        // release any connection resources used by the method
+	        get.releaseConnection();
+	    }
 		
+
 	}
 }
