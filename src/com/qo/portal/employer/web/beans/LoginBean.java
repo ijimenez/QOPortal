@@ -5,7 +5,7 @@
 
 package com.qo.portal.employer.web.beans;
 
-import com.qo.portal.employer.services.LdapService;
+import com.qo.portal.employer.services.GMailLoginService;
 
 public class LoginBean
 {
@@ -41,7 +41,7 @@ public class LoginBean
     	System.out.println("LoginBean@login - start: "+this);
     	try
 		{
-			LdapService.login(name, password.getBytes());
+			GMailLoginService.login(name, password.toCharArray());
 			return "loginOk";
 		} 
     	catch (Exception e)
